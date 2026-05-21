@@ -1,0 +1,6 @@
+{
+  "name": "SolaraConnect",
+  "description": "แพลตฟอร์ม Web3 เปลี่ยนหลังคาบ้านเป็นสินทรัพย์สร้างรายได้ - Decentralized solar finance ecosystem bridging real-world grid infrastructure with stable, high-yield DeFi lending pools.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

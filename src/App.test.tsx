@@ -5,6 +5,12 @@ import App from './App';
 describe('App', () => {
   it('renders without crashing', () => {
     render(<App />);
-    expect(screen.getByText('SolNest')).toBeInTheDocument();
+    expect(screen.getAllByText('SolNest').length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('renders navigation items', () => {
+    render(<App />);
+    expect(screen.getByText('Marketplace')).toBeInTheDocument();
+    expect(screen.getByText('Portfolio')).toBeInTheDocument();
   });
 });

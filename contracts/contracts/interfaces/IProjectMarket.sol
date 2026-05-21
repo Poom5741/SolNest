@@ -20,6 +20,7 @@ interface IProjectMarket {
 
     struct InvestorInfo {
         uint256 deposited;
+        uint256 claimed;
     }
 
     event Deposited(address indexed investor, uint256 amount);

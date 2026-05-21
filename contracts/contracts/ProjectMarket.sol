@@ -122,24 +122,24 @@ contract ProjectMarket is IProjectMarket, ERC20, AccessControl, ReentrancyGuard 
             revert InvalidStatus();
         }
 
-        uint256 lpBalance = balanceOf(msg.sender);
-        if (lpBalance == 0) revert InsufficientBalance();
+        InvestorInfo storage investor = _investors[msg.sender];
+        if (investor.deposited == 0) revert InsufficientBalance();
+        if (investor.claimed > 0) revert("Already claimed");
 
-        uint256 totalLpSupply = totalSupply();
-        uint256 poolBalance = _project.totalRepaid;
-
-        uint256 share = (lpBalance * poolBalance) / totalLpSupply;
+        uint256 share = (investor.deposited * _project.totalRepaid) / _project.totalFunded;
         if (share == 0) revert("Nothing to claim");
 
-        _burn(msg.sender, lpBalance);
+        investor.claimed = share;
 
-        uint256 usdcBalance = usdc.balanceOf(address(this));
-        if (usdcBalance < share) revert InsufficientBalance();
+        uint256 lpBalance = balanceOf(msg.sender);
+        if (lpBalance > 0) {
+            _burn(msg.sender, lpBalance);
+        }
 
         usdc.safeTransfer(msg.sender, share);
 
-        uint256 yieldAmount = share > lpBalance ? share - lpBalance : 0;
-        emit Claimed(msg.sender, lpBalance, yieldAmount);
+        uint256 yieldAmount = share > investor.deposited ? share - investor.deposited : 0;
+        emit Claimed(msg.sender, investor.deposited, yieldAmount);
     }
 
     function startFunding() external onlyRole(LIFECYCLE_ROLE) onlyStatus(ProjectStatus.Created) {

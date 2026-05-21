@@ -366,9 +366,9 @@ describe("ProjectMarket", function () {
 
     it("should revert claim twice", async function () {
       await market.connect(investor).claimRewards();
-      await expect(
-        market.connect(investor).claimRewards()
-      ).to.be.revertedWithCustomError(market, "InsufficientBalance");
+      await expect(market.connect(investor).claimRewards()).to.be.revertedWith(
+        "Already claimed"
+      );
     });
   });
 

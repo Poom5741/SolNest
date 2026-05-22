@@ -8,6 +8,7 @@ import AdminView from "./components/AdminView";
 import SecondaryMarketView from "./components/SecondaryMarketView";
 import { ToastProvider, useToast } from "./components/Toast";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { Web3Provider } from "./services/Web3Provider";
 import { useMockProjects } from "./services/mock/useMockProjects";
 import { useMockWallet } from "./services/mock/useMockWallet";
 import { useMockLending } from "./services/mock/useMockLending";
@@ -15,6 +16,13 @@ import { useMockPortfolio } from "./services/mock/useMockPortfolio";
 import { useMockHomeowner } from "./services/mock/useMockHomeowner";
 import { useMockAdmin } from "./services/mock/useMockAdmin";
 import { useMockSecondaryMarket } from "./services/mock/useMockSecondaryMarket";
+import useRealWallet from "./services/real/useRealWallet";
+import useRealProjects from "./services/real/useRealProjects";
+import useRealLending from "./services/real/useRealLending";
+import useRealPortfolio from "./services/real/useRealPortfolio";
+import useRealHomeowner from "./services/real/useRealHomeowner";
+import useRealAdmin from "./services/real/useRealAdmin";
+import useRealSecondaryMarket from "./services/real/useRealSecondaryMarket";
 import {
   Zap,
   Wallet,
@@ -28,6 +36,8 @@ import {
   Settings,
   ShoppingCart,
 } from "lucide-react";
+
+const USE_REAL = import.meta.env.VITE_USE_REAL === "true";
 
 const navItems: { id: ViewType; labelKey: string; icon: React.ElementType }[] = [
   { id: "marketplace", labelKey: "navMarketplace", icon: BarChart3 },
@@ -48,13 +58,54 @@ function AppContent() {
 
   const t = translations[lang];
   const { addToast } = useToast();
-  const { data: projects, updateProjectStatus, addProject } = useMockProjects();
-  const { data: wallet, connect, disconnect, updateBalance } = useMockWallet();
-  const { data: positions, deposit, withdraw, claimRewards } = useMockLending();
-  const { data: portfolioSummary } = useMockPortfolio(positions);
-  const { loan, telemetry, inverter, makeRepayment } = useMockHomeowner();
-  const { createProject } = useMockAdmin(addProject, updateProjectStatus);
-  const { data: listings, myListings, buyListing, createListing } = useMockSecondaryMarket(wallet.address);
+
+  const mockProjects = useMockProjects();
+  const mockWallet = useMockWallet();
+  const mockLending = useMockLending();
+  const mockPf = useMockPortfolio(mockLending.data);
+  const mockHomeowner = useMockHomeowner();
+  const mockAdmin = useMockAdmin(mockProjects.addProject, mockProjects.updateProjectStatus);
+  const mockSM = useMockSecondaryMarket(mockWallet.data?.address);
+
+  const realProjects = useRealProjects();
+  const realWallet = useRealWallet();
+  const realLending = useRealLending();
+  const realPf = useRealPortfolio(realLending.data);
+  const realHomeowner = useRealHomeowner();
+  const realAdmin = useRealAdmin(realProjects.addProject, realProjects.updateProjectStatus);
+  const realSM = useRealSecondaryMarket(realWallet.data?.address);
+
+  const {
+    data: projectsRaw,
+    addProject,
+    updateProjectStatus,
+  } = USE_REAL ? realProjects : mockProjects;
+  const projects = projectsRaw ?? [];
+
+  const {
+    data: walletRaw,
+    connect,
+    disconnect,
+    updateBalance,
+  } = USE_REAL ? realWallet : mockWallet;
+  const wallet = walletRaw ?? { isConnected: false, address: "", usdcBalance: 0 };
+
+  const {
+    data: positionsRaw,
+    deposit,
+    withdraw,
+    claimRewards,
+  } = USE_REAL ? realLending : mockLending;
+  const positions = positionsRaw ?? [];
+
+  const { data: portfolioSummaryRaw } = USE_REAL ? realPf : mockPf;
+  const portfolioSummary = portfolioSummaryRaw ?? { totalInvested: 0, totalEarned: 0, activePositions: 0, totalLpTokens: 0 };
+
+  const { loan, telemetry, inverter, makeRepayment } = USE_REAL ? realHomeowner : mockHomeowner;
+
+  const { createProject, updateStatus: adminUpdateStatus } = USE_REAL ? realAdmin : mockAdmin;
+
+  const { data: listings, myListings, buyListing, createListing } = USE_REAL ? realSM : mockSM;
 
   const handleSetLanguage = (choice: Language) => {
     setLang(choice);
@@ -74,13 +125,13 @@ function AppContent() {
 
   const handleDeposit = async (projectId: string, projectName: string, amount: number) => {
     const ok = await deposit(projectId, projectName, amount);
-    if (ok) updateBalance(-amount);
+    if (ok && !USE_REAL) updateBalance(-amount);
     return ok;
   };
 
   const handleWithdraw = async (projectId: string, amount: number) => {
     const ok = await withdraw(projectId, amount);
-    if (ok) updateBalance(amount);
+    if (ok && !USE_REAL) updateBalance(amount);
     return ok;
   };
 
@@ -93,7 +144,11 @@ function AppContent() {
   };
 
   const handleUpdateProjectStatus = (id: string, status: ProjectStatus) => {
-    updateProjectStatus(id, status);
+    if (USE_REAL) {
+      adminUpdateStatus(id, status);
+    } else {
+      updateProjectStatus(id, status);
+    }
   };
 
   const handleBuyListing = async (listingId: string) => {
@@ -101,7 +156,7 @@ function AppContent() {
   };
 
   const handleCreateListing = (projectId: string, projectName: string, amount: number, price: number) => {
-    createListing(projectId, projectName, amount, price, wallet.address);
+    createListing(projectId, projectName, amount, price, wallet.address ?? "");
   };
 
   return (
@@ -226,7 +281,7 @@ function AppContent() {
               projects={projects}
               lang={lang}
               onDeposit={handleDeposit}
-              walletConnected={wallet.isConnected}
+              walletConnected={wallet.isConnected ?? false}
               onConnectWallet={() => setShowWalletModal(true)}
             />
           )}
@@ -262,7 +317,7 @@ function AppContent() {
               myListings={myListings}
               projects={projects}
               lang={lang}
-              walletAddress={wallet.address}
+              walletAddress={wallet.address ?? ""}
               onBuy={handleBuyListing}
               onCreateListing={handleCreateListing}
             />
@@ -316,8 +371,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <ToastProvider>
-      <AppContent />
-    </ToastProvider>
+    <ErrorBoundary>
+      <Web3Provider>
+        <ToastProvider>
+          <AppContent />
+        </ToastProvider>
+      </Web3Provider>
+    </ErrorBoundary>
   );
 }

@@ -1,8 +1,8 @@
 # Project State
 
 ## Current Status
-- **Phase**: Phase 3 COMPLETE (Real Data Integration)
-- **Next action**: Phase 4 — Cloudflare Backend + Production Polish
+- **Phase**: Phase 4 COMPLETE (Cloudflare Backend + Production Polish)
+- **Next action**: v1.0 ship — deploy to Cloudflare Pages
 
 ## Phase 1 Summary (Complete)
 
@@ -43,6 +43,34 @@
 - TypeChain types regenerated (68 typings from 20 artifacts)
 - ABIs exported to `src/abis/` (5 files)
 - Contracts compiled (Solidity 0.8.24, optimizer 200 runs)
+
+## Phase 4 Summary (Complete)
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| CLO-02 (Workers API) | ✅ | Hono Worker at `src/worker/index.ts` — metadata, risk, telemetry, file upload endpoints |
+| CLO-03 (D1 database) | ✅ | Schema + db helpers in `src/worker/schema.sql` + `db.ts`. Tables: project_metadata, risk_assessments, energy_telemetry |
+| CLO-04 (R2 storage) | ✅ | Upload/download/delete handlers in `src/worker/r2.ts`. Endpoint: POST /api/upload, GET /api/files/* |
+| RSK-01 (risk metrics) | ✅ | RiskBadge component with score breakdown. API endpoint: GET /api/projects/:id/risk |
+| RSK-02 (disclosure) | ✅ | RiskBadge shows per-project risk level (Low/Moderate/High) with score |
+
+### Infrastructure
+- **Wrangler v4.93.1** — configured with D1 + R2 bindings in `wrangler.toml`
+- **Hono** lightweight Worker framework installed
+- **Worker tsconfig** separate from root (uses `@cloudflare/workers-types`)
+- **Frontend API client** in `src/services/api.ts` with typed endpoints
+- `VITE_API_URL` env var to configure API base URL
+
+### Blocked (requires Cloudflare API token)
+- CLO-01: Pages deploy (`npx wrangler pages deploy dist/`)
+- Creating D1 database (`npx wrangler d1 create solnest-db`)
+- Creating R2 bucket (`npx wrangler r2 bucket create solnest-uploads`)
+
+### Verification
+- **126 tests** (16 files), 0 failures
+- **tsc --noEmit**: 0 errors
+- **Build**: succeeds (654KB JS)
+- **All phases 1-4 complete**
 
 ## Phase 3 Summary (Complete)
 
@@ -90,12 +118,17 @@
 | ERC20 LP token per project | Locked |
 | AccessControl (OZ) + ReentrancyGuard | Locked |
 | Local Hardhat node for dev | Locked |
+| Hono for Workers API | Locked |
+| D1 for off-chain metadata | Locked |
+| R2 for document/image storage | Locked |
 | VITE_USE_REAL env toggle | Locked |
 
 ## Open Questions
 - Which L2 to deploy on?
 - Token standard (ERC-20 vs ERC-3643)?
 - Deploy to Sepolia testnet? (script ready, needs env vars)
+- Deploy Workers API + D1 + R2 to production? (needs Cloudflare API token)
+- Cloudflare Pages deploy for stakeholder preview? (CLO-01, blocked on API token)
 
 ---
-*Last updated: 2026-05-22 after Phase 3 completion*
+*Last updated: 2026-05-22 after Phase 4 completion*

@@ -2,3 +2,31 @@ name = "solnest"
 pages_build_output_dir = "dist"
 
 compatibility_date = "2025-05-22"
+compatibility_flags = ["nodejs_compat"]
+
+# Workers API — off-chain services
+main = "src/worker/index.ts"
+
+# D1 Database — off-chain project metadata, risk, telemetry
+# Create: npx wrangler d1 create solnest-db
+# Then copy the binding ID here
+[[d1_databases]]
+binding = "DB"
+database_name = "solnest-db"
+database_id = "local-dev"
+
+# R2 Bucket — document/image storage
+# Create: npx wrangler r2 bucket create solnest-uploads
+[[r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "solnest-uploads"
+
+[env.production]
+main = "src/worker/index.ts"
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "solnest-db"
+database_id = ""
+[[env.production.r2_buckets]]
+binding = "R2_BUCKET"
+bucket_name = "solnest-uploads"

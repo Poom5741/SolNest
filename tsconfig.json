@@ -27,5 +27,5 @@
     "noUnusedParameters": false
   },
   "include": ["src"],
-  "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "src/setupTests.ts"]
+  "exclude": ["src/**/*.test.tsx", "src/**/*.test.ts", "src/setupTests.ts", "src/worker"]
 }

@@ -12,6 +12,7 @@ import {
 import type { SecondaryListing, Project, Language } from "../types";
 import { translations } from "../translations";
 import { useToast } from "./Toast";
+import { useFormatCurrency } from "../hooks/useFormatCurrency";
 
 interface SecondaryMarketViewProps {
   listings: SecondaryListing[];
@@ -42,11 +43,7 @@ export default function SecondaryMarketView({
     price: 1.0,
   });
 
-  const formatCurrency = (n: number) =>
-    n.toLocaleString(lang === "th" ? "th-TH" : "en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+  const formatCurrency = useFormatCurrency(lang, 2);
 
   const handleBuy = async (listing: SecondaryListing) => {
     setBuyLoading(listing.id);

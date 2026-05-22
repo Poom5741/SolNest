@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Search,
@@ -18,6 +18,8 @@ import {
 import type { Project, Language } from "../types";
 import { translations } from "../translations";
 import { useToast } from "./Toast";
+import { useProjectFilters } from "../hooks/useProjectFilters";
+import { useFormatCurrency } from "../hooks/useFormatCurrency";
 
 interface MarketplaceViewProps {
   projects: Project[];
@@ -53,38 +55,13 @@ export default function MarketplaceView({
 }: MarketplaceViewProps) {
   const t = translations[lang];
   const { addToast } = useToast();
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>("All");
-  const [sortKey, setSortKey] = useState<SortKey>("newest");
-  const [search, setSearch] = useState("");
+  const { filterStatus, setFilterStatus, sortKey, setSortKey, search, setSearch, filtered } =
+    useProjectFilters(projects);
+  const formatCurrency = useFormatCurrency(lang);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [depositAmount, setDepositAmount] = useState(100);
   const [isDepositing, setIsDepositing] = useState(false);
-
-  const filtered = useMemo(() => {
-    let result = [...projects];
-    if (filterStatus !== "All") {
-      result = result.filter(p => p.status === filterStatus);
-    }
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        p =>
-          p.name.toLowerCase().includes(q) ||
-          p.location.toLowerCase().includes(q) ||
-          p.installerName.toLowerCase().includes(q)
-      );
-    }
-    result.sort((a, b) => {
-      if (sortKey === "apy") return b.apy - a.apy;
-      if (sortKey === "progress") return b.fundingProgress - a.fundingProgress;
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-    return result;
-  }, [projects, filterStatus, search, sortKey]);
-
-  const formatCurrency = (n: number) =>
-    n.toLocaleString(lang === "th" ? "th-TH" : "en-US");
 
   const handleDeposit = async () => {
     if (!walletConnected) {

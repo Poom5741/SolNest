@@ -15,6 +15,7 @@ import {
 import type { LendingPosition, PortfolioSummary, Language } from "../types";
 import { translations } from "../translations";
 import { useToast } from "./Toast";
+import { useFormatCurrency } from "../hooks/useFormatCurrency";
 
 interface PortfolioViewProps {
   positions: LendingPosition[];
@@ -41,13 +42,8 @@ export default function PortfolioView({
 }: PortfolioViewProps) {
   const t = translations[lang];
   const { addToast } = useToast();
+  const formatCurrency = useFormatCurrency(lang, 2);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
-
-  const formatCurrency = (n: number) =>
-    n.toLocaleString(lang === "th" ? "th-TH" : "en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
 
   const handleWithdraw = async (pos: LendingPosition) => {
     setActionLoading(`w-${pos.projectId}`);

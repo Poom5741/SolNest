@@ -17,6 +17,7 @@ import {
 import type { Project, ProjectStatus, RiskLevel, AdminProjectForm, Language } from "../types";
 import { translations } from "../translations";
 import { useToast } from "./Toast";
+import { useFormatCurrency } from "../hooks/useFormatCurrency";
 
 interface AdminViewProps {
   projects: Project[];
@@ -62,9 +63,7 @@ export default function AdminView({
     description: "",
     installerName: "Siwasolar EPC",
   });
-
-  const formatCurrency = (n: number) =>
-    n.toLocaleString(lang === "th" ? "th-TH" : "en-US");
+  const formatCurrency = useFormatCurrency(lang);
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();

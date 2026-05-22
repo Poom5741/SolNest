@@ -16,6 +16,7 @@ import {
 import type { LoanDetails, EnergyTelemetry, InverterData, Language } from "../types";
 import { translations } from "../translations";
 import { useToast } from "./Toast";
+import { useFormatCurrency } from "../hooks/useFormatCurrency";
 
 interface HomeownerViewProps {
   loan: LoanDetails | null;
@@ -36,12 +37,7 @@ export default function HomeownerView({
   const { addToast } = useToast();
   const [isPaying, setIsPaying] = useState(false);
   const [energyView, setEnergyView] = useState<"daily" | "weekly" | "monthly">("daily");
-
-  const formatCurrency = (n: number) =>
-    n.toLocaleString(lang === "th" ? "th-TH" : "en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+  const formatCurrency = useFormatCurrency(lang, 2);
 
   const handleRepayment = async () => {
     setIsPaying(true);

@@ -107,7 +107,7 @@ contract ProjectMarket is IProjectMarket, ERC20, AccessControl, ReentrancyGuard 
         emit Withdrawn(msg.sender, amount);
     }
 
-    function repay(uint256 amount) external nonReentrant onlyStatus(ProjectStatus.Active) {
+    function repay(uint256 amount) external nonReentrant onlyHomeowner onlyStatus(ProjectStatus.Active) {
         if (amount == 0) revert ZeroAmount();
 
         usdc.safeTransferFrom(msg.sender, address(this), amount);
@@ -124,21 +124,21 @@ contract ProjectMarket is IProjectMarket, ERC20, AccessControl, ReentrancyGuard 
 
         InvestorInfo storage investor = _investors[msg.sender];
         if (investor.deposited == 0) revert InsufficientBalance();
-        if (investor.claimed > 0) revert("Already claimed");
 
-        uint256 share = (investor.deposited * _project.totalRepaid) / _project.totalFunded;
-        if (share == 0) revert("Nothing to claim");
+        uint256 cumulativeShare = (investor.deposited * _project.totalRepaid) / _project.totalFunded;
+        uint256 newShare = cumulativeShare - investor.claimed;
+        if (newShare == 0) revert("Nothing to claim");
 
-        investor.claimed = share;
+        investor.claimed = cumulativeShare;
 
         uint256 lpBalance = balanceOf(msg.sender);
         if (lpBalance > 0) {
             _burn(msg.sender, lpBalance);
         }
 
-        usdc.safeTransfer(msg.sender, share);
+        usdc.safeTransfer(msg.sender, newShare);
 
-        uint256 yieldAmount = share > investor.deposited ? share - investor.deposited : 0;
+        uint256 yieldAmount = cumulativeShare > investor.deposited ? cumulativeShare - investor.deposited : 0;
         emit Claimed(msg.sender, investor.deposited, yieldAmount);
     }
 

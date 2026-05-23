@@ -82,6 +82,12 @@ export interface SecondaryListing {
   price: number;
   seller: string;
   createdAt: string;
+  expirationDate?: number;
+  status?: "active" | "expired" | "cancelled" | "pending";
+  fee?: number;
+  listingId?: number;
+  durationDays?: number;
+  tokenContract?: string;
 }
 
 export interface WalletState {

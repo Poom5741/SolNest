@@ -9,7 +9,9 @@ interface UseMockSecondaryMarketReturn {
   error: string | null;
   mutate: () => void;
   buyListing: (listingId: string) => Promise<boolean>;
-  createListing: (projectId: string, projectName: string, amount: number, price: number, seller: string) => void;
+  createListing: (projectId: string, projectName: string, amount: number, price: number, seller: string, durationDays?: number) => void;
+  cancelListing: (listingId: number) => void;
+  refresh: () => void;
 }
 
 export function useMockSecondaryMarket(walletAddress: string): UseMockSecondaryMarketReturn {
@@ -27,8 +29,17 @@ export function useMockSecondaryMarket(walletAddress: string): UseMockSecondaryM
     return true;
   }, []);
 
+  const cancelListing = useCallback((listingId: number): void => {
+    setListings(prev =>
+      prev.map(l =>
+        l.listingId === listingId ? { ...l, status: "cancelled" as const } : l
+      )
+    );
+  }, []);
+
   const createListing = useCallback(
-    (projectId: string, projectName: string, amount: number, price: number, seller: string) => {
+    (projectId: string, projectName: string, amount: number, price: number, seller: string, durationDays = 7) => {
+      const now = Math.floor(Date.now() / 1000);
       const newListing: SecondaryListing = {
         id: `LST-${String(listings.length + 1).padStart(3, "0")}`,
         projectId,
@@ -37,6 +48,12 @@ export function useMockSecondaryMarket(walletAddress: string): UseMockSecondaryM
         price,
         seller,
         createdAt: new Date().toISOString().split("T")[0],
+        expirationDate: now + durationDays * 86400,
+        status: "active",
+        fee: 250,
+        listingId: listings.length + 1,
+        durationDays,
+        tokenContract: `0x${String(listings.length + 1).padStart(40, "0")}`,
       };
       setListings(prev => [...prev, newListing]);
     },
@@ -48,5 +65,9 @@ export function useMockSecondaryMarket(walletAddress: string): UseMockSecondaryM
     setTimeout(() => setIsLoading(false), 500);
   }, []);
 
-  return { data: listings, myListings, isLoading, error, mutate, buyListing, createListing };
+  const refresh = useCallback(() => {
+    setListings([...mockSecondaryListings]);
+  }, []);
+
+  return { data: listings, myListings, isLoading, error, mutate, buyListing, createListing, cancelListing, refresh };
 }

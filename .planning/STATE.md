@@ -1,8 +1,8 @@
 # Project State
 
 ## Current Status
-- **Phase**: Phase 5 CONTEXT GATHERED (Secondary Market)
-- **Next action**: Plan Phase 5 → `/gsd-plan-phase 5`
+- **Phase**: Phase 5 PLAN CREATED (Secondary Market)
+- **Next action**: Execute Phase 5 → review PLAN-05.md → `/gsd-execute-phase 5`
 
 ## Phase 1 Summary (Complete)
 
@@ -104,6 +104,22 @@
 - **126 tests** (16 files), 0 failures
 - **tsc --noEmit**: 0 errors
 - **Build**: succeeds (651KB JS)
+
+## Phase 5 Planning (Ready)
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| SEC-01 (List LP tokens) | ⬜ | Planned — Task 1 (contract) + Task 4 (hook) + Task 5 (UI) |
+| SEC-02 (Buy LP tokens) | ⬜ | Planned — Task 1 (contract buy()) + Task 4 (hook) + Task 5 (UI) |
+| SEC-03 (Order book) | ⬜ | Planned — Task 1 (listing storage) + Task 4 (read queries) + Task 5 (listings grid) |
+
+**Planning artifacts:**
+- `.planning/05-CONTEXT.md` — 16 locked decisions (D-01 through D-16)
+- `.planning/05-RESEARCH.md` — Contract design, wagmi patterns, pitfalls
+- `.planning/05-UI-SPEC.md` — Design system + copywriting contract
+- `.planning/05-PLAN.md` — 8 tasks, 6 waves, execution order
+
+**New contract:** `contracts/contracts/SecondaryMarket.sol` (escrow P2P, not yet created)
 
 ## Key Decisions
 

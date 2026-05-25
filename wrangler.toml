@@ -1,11 +1,12 @@
 name = "solnest"
-pages_build_output_dir = "dist"
+main = "src/worker/index.ts"
 
 compatibility_date = "2025-05-22"
 compatibility_flags = ["nodejs_compat"]
 
-# Workers API — off-chain services
-main = "src/worker/index.ts"
+# Static assets (Vite build output)
+[assets]
+directory = "./dist"
 
 # D1 Database — off-chain project metadata, risk, telemetry
 # Create: npx wrangler d1 create solnest-db

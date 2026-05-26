@@ -47,6 +47,30 @@ const navItems: { id: ViewType; labelKey: string; icon: React.ElementType }[] = 
   { id: "secondary", labelKey: "navSecondary", icon: ShoppingCart },
 ];
 
+function Atmosphere() {
+  return (
+    <div className="atmosphere">
+      <div className="orb o1" />
+      <div className="orb o2" />
+      <div className="orb o3" />
+      <div className="dot-grid" />
+      <div className="noise" />
+      <div className="particles">
+        {Array.from({ length: 20 }, (_, i) => (
+          <span
+            key={i}
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDuration: `${8 + Math.random() * 12}s`,
+              animationDelay: `${Math.random() * 10}s`,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function AppContent() {
   const [lang, setLang] = useState<Language>(() => {
     const cached = localStorage.getItem("solnest_lang");
@@ -169,13 +193,17 @@ function AppContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a1628] text-white flex flex-col font-sans antialiased">
-      <header className="sticky top-0 z-40 bg-[#0a1628]/80 backdrop-blur-xl border-b border-white/5">
+    <div className="min-h-screen text-white flex flex-col font-sans antialiased relative z-[1]">
+      <Atmosphere />
+      <header className="sticky top-0 z-40 backdrop-blur-xl bg-[rgba(5,13,26,0.6)] border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center">
-                <Zap className="w-4 h-4 text-white" />
+              <div className="relative flex items-center justify-center w-8 h-8">
+                <div className="absolute inset-[-4px] rounded-full bg-[radial-gradient(circle,rgba(52,211,153,0.35),transparent_65%)] animate-pulse" />
+                <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center relative">
+                  <Zap className="w-4 h-4 text-white" />
+                </div>
               </div>
               <span className="font-bold text-lg text-white">{t.brandName}</span>
               <span className="hidden md:flex items-center gap-1 px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full text-[10px] font-medium">
@@ -192,14 +220,17 @@ function AppContent() {
                   <button
                     key={item.id}
                     onClick={() => handleSetView(item.id)}
-                    className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
+                    className={`relative flex items-center gap-1.5 px-3.5 py-2 rounded-[10px] text-[13.5px] font-medium transition-colors ${
                       isActive
-                        ? "bg-emerald-600/20 text-emerald-400"
-                        : "text-white/60 hover:text-white hover:bg-white/5"
+                        ? "text-white bg-white/[0.04]"
+                        : "text-white/60 hover:text-white hover:bg-white/[0.04]"
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5" />
                     {(t as Record<string, string>)[item.labelKey]}
+                    {isActive && (
+                      <span className="absolute left-3.5 right-3.5 -bottom-[1px] h-[2px] rounded-full bg-[var(--acc)] shadow-[0_0_12px_var(--acc),0_0_24px_var(--acc-glow)]" />
+                    )}
                   </button>
                 );
               })}
@@ -207,15 +238,16 @@ function AppContent() {
 
             <div className="flex items-center gap-3">
               {wallet.isConnected ? (
-                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-lg">
-                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <div className="hidden sm:flex items-center gap-2.5 h-10 px-3.5 pr-1.5 rounded-full bg-white/[0.04] border border-[var(--acc-glow)] shadow-[0_0_0_1px_var(--acc-soft),0_0_16px_-4px_var(--acc-glow)]">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_var(--acc)]" />
                   <span className="text-xs text-white/60">{wallet.address}</span>
-                  <span className="text-xs font-bold text-emerald-400">{wallet.usdcBalance.toLocaleString()} USDC</span>
+                  <span className="text-xs font-bold font-mono text-white/70">{wallet.usdcBalance.toLocaleString()} USDC</span>
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-indigo-500 border border-white/15" />
                 </div>
               ) : (
                 <button
                   onClick={() => setShowWalletModal(true)}
-                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-medium transition-colors"
+                  className="hidden sm:flex items-center gap-1.5 h-10 px-5 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] text-xs font-semibold shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow),0_1px_0_rgba(255,255,255,0.4)_inset] hover:brightness-110 transition-all active:translate-y-px"
                 >
                   <Wallet className="w-3.5 h-3.5" />
                   {t.connectWallet}
@@ -241,7 +273,7 @@ function AppContent() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-white/5 bg-[#0f1d35]">
+          <div className="md:hidden border-t border-white/[0.06] bg-[rgba(5,13,26,0.85)] backdrop-blur-xl">
             <div className="px-4 py-3 space-y-1">
               {navItems.map(item => {
                 const Icon = item.icon;
@@ -336,7 +368,7 @@ function AppContent() {
         </ErrorBoundary>
       </main>
 
-      <footer className="border-t border-white/5 py-6">
+      <footer className="border-t border-white/[0.05] py-8 mt-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
@@ -345,15 +377,15 @@ function AppContent() {
               </div>
               <span className="text-sm font-bold text-white">{t.brandName}</span>
             </div>
-            <p className="text-xs text-white/40 text-center">{t.footerDesc}</p>
-            <p className="text-xs text-white/30">{t.rightsReserved}</p>
+            <p className="text-xs text-[var(--t-3)] text-center">{t.footerDesc}</p>
+            <p className="text-xs text-[var(--t-4)]">{t.rightsReserved}</p>
           </div>
         </div>
       </footer>
 
       {showWalletModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="bg-[#0f1d35] border border-white/10 rounded-2xl p-6 w-full max-w-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgba(2,6,14,0.65)] backdrop-blur-lg p-4">
+          <div className="glass-3 p-6 w-full max-w-sm">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-bold text-white">{t.walletModalTitle}</h3>
               <button onClick={() => setShowWalletModal(false)} className="text-white/40 hover:text-white">
@@ -363,7 +395,7 @@ function AppContent() {
             <p className="text-sm text-white/50 mb-6">{t.walletModalDesc}</p>
             <button
               onClick={finalizeWalletConnection}
-              className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold transition-colors mb-3"
+              className="w-full py-3 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-xl font-semibold shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow)] hover:brightness-110 transition-all mb-3"
             >
               {t.connectWallet}
             </button>

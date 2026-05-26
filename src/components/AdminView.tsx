@@ -115,7 +115,7 @@ export default function AdminView({
           {t.back}
         </button>
 
-        <div className="bg-white/5 border border-white/5 rounded-xl p-6">
+        <div className="glass-2 p-6">
           <div className="flex items-center gap-2 mb-1">
             <span className={`px-2 py-0.5 rounded text-xs font-medium ${statusColors[selectedProject.status]}`}>
               {selectedProject.status}
@@ -126,30 +126,27 @@ export default function AdminView({
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div>
-              <span className="text-xs text-white/40">{t.adLocation}</span>
+              <span className="text-[11px] text-[var(--t-3)] uppercase tracking-widest">{t.adLocation}</span>
               <div className="text-sm text-white mt-1">{selectedProject.location}</div>
             </div>
             <div>
-              <span className="text-xs text-white/40">{t.adSystemSize}</span>
+              <span className="text-[11px] text-[var(--t-3)] uppercase tracking-widest">{t.adSystemSize}</span>
               <div className="text-sm text-white mt-1">{selectedProject.systemSize} kW</div>
             </div>
             <div>
-              <span className="text-xs text-white/40">{t.mpTargetAmount}</span>
+              <span className="text-[11px] text-[var(--t-3)] uppercase tracking-widest">{t.mpTargetAmount}</span>
               <div className="text-sm text-white mt-1">{formatCurrency(selectedProject.targetAmount)} USDC</div>
             </div>
             <div>
-              <span className="text-xs text-white/40">{t.mpAPY}</span>
+              <span className="text-[11px] text-[var(--t-3)] uppercase tracking-widest">{t.mpAPY}</span>
               <div className="text-sm text-white mt-1">{selectedProject.apy}%</div>
             </div>
           </div>
 
           <div className="mb-4">
-            <span className="text-xs text-white/40">{t.mpFundingProgress}</span>
-            <div className="h-2 bg-white/10 rounded-full overflow-hidden mt-1">
-              <div
-                className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full"
-                style={{ width: `${selectedProject.fundingProgress}%` }}
-              />
+            <span className="text-[11px] text-[var(--t-3)] uppercase tracking-widest">{t.mpFundingProgress}</span>
+            <div className="progress-glass mt-2">
+              <div style={{ width: `${selectedProject.fundingProgress}%` }} />
             </div>
             <span className="text-xs text-white/50 mt-1 block">{selectedProject.fundingProgress}% funded</span>
           </div>
@@ -161,7 +158,7 @@ export default function AdminView({
               <button
                 key={action.target}
                 onClick={() => handleStatusAction(selectedProject, action.target)}
-                className={`px-4 py-2 ${action.color} text-white rounded-lg text-sm font-medium transition-colors`}
+                className={`px-4 py-2 ${action.color} text-white rounded-[10px] text-sm font-medium transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.3)]`}
               >
                 {action.label}
               </button>
@@ -176,12 +173,14 @@ export default function AdminView({
     <div className="pb-20">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">{t.adTitle}</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-white via-emerald-200 to-emerald-400 bg-clip-text text-transparent">
+            {t.adTitle}
+          </h1>
           <p className="text-white/60 mt-2">{t.adDesc}</p>
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-medium transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[14px] shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow)] hover:brightness-110 text-sm font-medium transition-all"
         >
           {showForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           {showForm ? t.close : t.adCreateTitle}
@@ -192,76 +191,76 @@ export default function AdminView({
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
-          className="bg-white/5 border border-white/5 rounded-xl p-6 mb-8"
+          className="glass-2 p-6 mb-8"
         >
           <h2 className="text-lg font-semibold text-white mb-4">{t.adCreateTitle}</h2>
           <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.adProjectName}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adProjectName}</label>
               <input
                 value={form.name}
                 onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 required
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.adLocation}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adLocation}</label>
               <input
                 value={form.location}
                 onChange={e => setForm(p => ({ ...p, location: e.target.value }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 required
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.adSystemSize}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adSystemSize}</label>
               <input
                 type="number"
                 value={form.systemSize}
                 onChange={e => setForm(p => ({ ...p, systemSize: Number(e.target.value) }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 min={1}
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.adTargetAmount}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adTargetAmount}</label>
               <input
                 type="number"
                 value={form.targetAmount}
                 onChange={e => setForm(p => ({ ...p, targetAmount: Number(e.target.value) }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 min={1000}
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.adAPY}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adAPY}</label>
               <input
                 type="number"
                 value={form.apy}
                 onChange={e => setForm(p => ({ ...p, apy: Number(e.target.value) }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 min={1}
                 max={30}
                 step={0.1}
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.adDuration}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adDuration}</label>
               <input
                 type="number"
                 value={form.duration}
                 onChange={e => setForm(p => ({ ...p, duration: Number(e.target.value) }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 min={1}
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.adRisk}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adRisk}</label>
               <select
                 value={form.risk}
                 onChange={e => setForm(p => ({ ...p, risk: e.target.value as RiskLevel }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
               >
                 <option value="Low">Low</option>
                 <option value="Moderate">Moderate</option>
@@ -269,26 +268,26 @@ export default function AdminView({
               </select>
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.adInstaller}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adInstaller}</label>
               <input
                 value={form.installerName}
                 onChange={e => setForm(p => ({ ...p, installerName: e.target.value }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
               />
             </div>
             <div className="md:col-span-2">
-              <label className="text-xs text-white/40 block mb-1">{t.adDescription}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.adDescription}</label>
               <textarea
                 value={form.description}
                 onChange={e => setForm(p => ({ ...p, description: e.target.value }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none focus:border-emerald-500/50 h-20 resize-none"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all h-20 resize-none"
                 required
               />
             </div>
             <div className="md:col-span-2">
               <button
                 type="submit"
-                className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+                className="w-full py-3 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[14px] shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow)] hover:brightness-110 font-semibold transition-all flex items-center justify-center gap-2"
               >
                 <Plus className="w-4 h-4" />
                 {t.adCreateBtn}
@@ -308,7 +307,7 @@ export default function AdminView({
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.03 }}
-              className="bg-white/5 border border-white/5 rounded-xl p-4"
+              className="glass-2 lift p-5"
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
@@ -340,7 +339,7 @@ export default function AdminView({
                       <button
                         key={action.target}
                         onClick={() => handleStatusAction(project, action.target)}
-                        className={`px-3 py-1.5 ${action.color} text-white rounded-lg text-xs font-medium transition-colors`}
+                        className={`px-3 py-1.5 ${action.color} text-white rounded-[10px] text-xs font-medium transition-colors shadow-[0_2px_8px_rgba(0,0,0,0.3)]`}
                       >
                         {action.label}
                       </button>

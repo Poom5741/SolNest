@@ -59,8 +59,8 @@ export default function HomeownerView({
   return (
     <div className="pb-20">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white">{t.hoTitle}</h1>
-        <p className="text-white/60 mt-2">{t.hoDesc}</p>
+        <h1 className="text-3xl font-bold gradient-text">{t.hoTitle}</h1>
+        <p className="text-[var(--t-2)] mt-2">{t.hoDesc}</p>
       </div>
 
       {loan && (
@@ -76,11 +76,13 @@ export default function HomeownerView({
               key={item.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white/5 border border-white/5 rounded-xl p-4"
+              className="glass-2 p-5"
             >
-              <div className="flex items-center gap-2 text-white/40 text-xs mb-2">
-                <item.icon className="w-4 h-4" />
-                {item.label}
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-9 h-9 rounded-[10px] bg-[var(--acc-soft)] flex items-center justify-center shrink-0">
+                  <item.icon className="w-4 h-4 text-[var(--acc)]" />
+                </div>
+                <span className="text-[var(--t-3)] text-xs leading-tight">{item.label}</span>
               </div>
               <div className={`text-lg font-bold ${item.color}`}>{item.value}</div>
             </motion.div>
@@ -89,7 +91,7 @@ export default function HomeownerView({
       )}
 
       {loan && (
-        <div className="bg-white/5 border border-white/5 rounded-xl p-6 mb-8">
+        <div className="glass-2 p-6 mb-8">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-emerald-400" />
@@ -97,20 +99,17 @@ export default function HomeownerView({
             </div>
             <span className="text-2xl font-bold text-white">${formatCurrency(loan.monthlyPayment)}</span>
           </div>
-          <div className="h-2 bg-white/10 rounded-full overflow-hidden mb-4">
-            <div
-              className="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full"
-              style={{ width: `${(loan.paymentsMade / loan.totalPayments) * 100}%` }}
-            />
+          <div className="progress-glass mb-4">
+            <div style={{ width: `${(loan.paymentsMade / loan.totalPayments) * 100}%` }} />
           </div>
-          <div className="flex justify-between text-xs text-white/40 mb-4">
+          <div className="flex justify-between text-xs text-[var(--t-3)] mb-4">
             <span>{loan.paymentsMade} of {loan.totalPayments} payments</span>
             <span>${formatCurrency(loan.remainingBalance)} remaining</span>
           </div>
           <button
             onClick={handleRepayment}
             disabled={isPaying}
-            className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+            className="w-full py-3 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow)] hover:brightness-110 disabled:opacity-50 rounded-xl font-semibold transition-all flex items-center justify-center gap-2"
           >
             {isPaying ? (
               <RefreshCw className="w-4 h-4 animate-spin" />
@@ -122,7 +121,7 @@ export default function HomeownerView({
         </div>
       )}
 
-      <div className="bg-white/5 border border-white/5 rounded-xl p-6 mb-8">
+      <div className="glass-2 p-6 mb-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Sun className="w-5 h-5 text-amber-400" />
@@ -133,10 +132,10 @@ export default function HomeownerView({
               <button
                 key={v}
                 onClick={() => setEnergyView(v)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                className={`h-[34px] px-3.5 rounded-full text-xs font-medium transition-all border ${
                   energyView === v
-                    ? "bg-amber-600 text-white"
-                    : "bg-white/5 text-white/50 hover:bg-white/10"
+                    ? "bg-[var(--acc-soft)] text-[var(--acc)] border-[var(--acc-glow)] shadow-[0_0_16px_-4px_var(--acc-glow)]"
+                    : "bg-white/[0.04] text-[var(--t-2)] border-white/[0.08]"
                 }`}
               >
                 {v === "daily" ? t.hoDaily : v === "weekly" ? t.hoWeekly : t.hoMonthly}
@@ -152,17 +151,17 @@ export default function HomeownerView({
                 initial={{ height: 0 }}
                 animate={{ height: `${(d.value / maxKwh) * 100}%` }}
                 transition={{ delay: i * 0.03, duration: 0.5, ease: "easeOut" }}
-                className="w-full max-w-[40px] bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-lg"
+                className="w-full max-w-[40px] bg-gradient-to-t from-emerald-600 to-emerald-400 rounded-t-[8px]"
               />
-              <span className="text-[10px] text-white/40 mt-1">{d.label}</span>
-              <span className="text-[10px] text-white/60 font-mono">{d.value.toFixed(0)}</span>
+              <span className="text-[10px] text-[var(--t-3)] mt-1">{d.label}</span>
+              <span className="text-[10px] text-[var(--t-2)] font-mono">{d.value.toFixed(0)}</span>
             </div>
           ))}
         </div>
       </div>
 
       {inverter && (
-        <div className="bg-white/5 border border-white/5 rounded-xl p-6">
+        <div className="glass-2 p-6">
           <div className="flex items-center gap-2 mb-4">
             <Activity className="w-5 h-5 text-emerald-400" />
             <h2 className="text-lg font-semibold text-white">{t.hoInverterTitle}</h2>
@@ -175,8 +174,8 @@ export default function HomeownerView({
               { label: t.hoTemperature, value: `${inverter.temperature}°C`, icon: Thermometer, color: "text-red-400" },
               { label: t.hoEfficiency, value: `${inverter.efficiency}%`, icon: Activity, color: "text-emerald-400" },
             ].map(item => (
-              <div key={item.label} className="bg-white/5 rounded-lg p-3">
-                <div className="flex items-center gap-1.5 text-white/40 text-[10px] mb-1">
+              <div key={item.label} className="glass-1 p-3 rounded-[var(--radius)]">
+                <div className="flex items-center gap-1.5 text-[var(--t-3)] text-[10px] mb-1">
                   <item.icon className="w-3 h-3" />
                   {item.label}
                 </div>

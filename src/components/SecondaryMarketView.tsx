@@ -50,7 +50,7 @@ function LoadingSkeleton() {
   return (
     <div className="space-y-2">
       {[1, 2, 3].map(i => (
-        <div key={i} className="bg-white/5 border border-white/5 rounded-xl p-4 animate-pulse">
+        <div key={i} className="glass-1 rounded-xl p-4 animate-pulse">
           <div className="h-4 bg-white/10 rounded w-48 mb-2" />
           <div className="h-3 bg-white/5 rounded w-72" />
         </div>
@@ -141,12 +141,14 @@ export default function SecondaryMarketView({
     <div className="pb-20">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-white">{t.smTitle}</h1>
-          <p className="text-white/60 mt-2">{t.smDesc}</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
+            {t.smTitle}
+          </h1>
+          <p className="text-[var(--t-2)] mt-2">{t.smDesc}</p>
         </div>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-sm font-medium transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[10px] shadow-[0_0_0_1px_var(--acc-glow),0_8px_20px_-6px_var(--acc-glow)] hover:brightness-110 text-sm font-medium transition-all"
         >
           {showCreate ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           {showCreate ? t.close : t.smCreateListing}
@@ -157,16 +159,16 @@ export default function SecondaryMarketView({
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: "auto" }}
-          className="bg-white/5 border border-white/5 rounded-xl p-6 mb-8"
+          className="glass-2 p-6 mb-8"
         >
-          <h3 className="text-lg font-semibold text-white mb-4">{t.smCreateListing}</h3>
+          <h3 className="text-lg font-semibold text-white tracking-tight mb-4">{t.smCreateListing}</h3>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.smProject}</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.smProject}</label>
               <select
                 value={newListing.projectId}
                 onChange={e => setNewListing(p => ({ ...p, projectId: e.target.value }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
               >
                 <option value="">Select project</option>
                 {projects.map(p => (
@@ -175,33 +177,33 @@ export default function SecondaryMarketView({
               </select>
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.smAmount} (LP Tokens)</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.smAmount} (LP Tokens)</label>
               <input
                 type="number"
                 value={newListing.amount}
                 onChange={e => setNewListing(p => ({ ...p, amount: Number(e.target.value) }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 min={1}
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">Total {t.smPrice} (USDC)</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">Total {t.smPrice} (USDC)</label>
               <input
                 type="number"
                 value={newListing.price}
                 onChange={e => setNewListing(p => ({ ...p, price: Number(e.target.value) }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 min={0.01}
                 step={0.01}
               />
             </div>
             <div>
-              <label className="text-xs text-white/40 block mb-1">{t.smDurationDays} (1-30 days)</label>
+              <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.smDurationDays} (1-30 days)</label>
               <input
                 type="number"
                 value={newListing.durationDays}
                 onChange={e => setNewListing(p => ({ ...p, durationDays: Math.min(30, Math.max(1, Number(e.target.value))) }))}
-                className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm text-white outline-none"
+                className="w-full bg-white/[0.04] border border-white/[0.1] rounded-[var(--radius)] px-3 py-2 text-sm text-white outline-none focus:border-[var(--acc)] focus:bg-white/[0.06] focus:shadow-[0_0_0_3px_var(--acc-soft)] transition-all"
                 min={1}
                 max={30}
               />
@@ -218,7 +220,7 @@ export default function SecondaryMarketView({
           ) : (
             <button
               onClick={handleCreateListing}
-              className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-medium transition-colors"
+              className="w-full py-2 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[10px] shadow-[0_0_0_1px_var(--acc-glow),0_8px_20px_-6px_var(--acc-glow)] hover:brightness-110 text-sm font-medium transition-all"
             >
               {t.smCreateListing}
             </button>
@@ -228,13 +230,13 @@ export default function SecondaryMarketView({
 
       <div className="space-y-6">
         <div>
-          <h2 className="text-lg font-semibold text-white mb-4">{t.smList} ({listings.length})</h2>
+          <h2 className="text-lg font-semibold text-white tracking-tight mb-4">{t.smList} ({listings.length})</h2>
           {isLoading ? (
             <LoadingSkeleton />
           ) : listings.length === 0 ? (
-            <div className="bg-white/5 border border-white/5 rounded-xl p-8 text-center">
-              <p className="text-white/60 text-sm font-medium mb-1">No Listings Available</p>
-              <p className="text-white/40 text-xs">No LP tokens are currently listed for sale. Check back later or list your own tokens.</p>
+            <div className="glass-1 rounded-xl p-8 text-center">
+              <p className="text-[var(--t-2)] text-sm font-medium mb-1">No Listings Available</p>
+              <p className="text-[var(--t-3)] text-xs">No LP tokens are currently listed for sale. Check back later or list your own tokens.</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -248,7 +250,7 @@ export default function SecondaryMarketView({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.03 }}
-                    className={`bg-white/5 border border-white/5 rounded-xl p-4 flex items-center justify-between gap-4 ${isInactive ? "opacity-50" : ""}`}
+                    className={`glass-2 lift p-5 flex items-center justify-between gap-4 ${isInactive ? "opacity-50" : ""}`}
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -264,18 +266,18 @@ export default function SecondaryMarketView({
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-4 text-xs text-white/50">
+                      <div className="flex items-center gap-4 text-xs text-[var(--t-2)]">
                         <span>{formatCurrency(listing.amount)} LP</span>
                         <span>{formatCurrency(listing.price)} USDC</span>
                         {listing.fee != null && (
-                          <span className="text-white/40">{t.smFee}: {(listing.fee / 100).toFixed(1)}%</span>
+                          <span className="text-[var(--t-3)]">{t.smFee}: {(listing.fee / 100).toFixed(1)}%</span>
                         )}
                         <span className="flex items-center gap-1">
                           <Users className="w-3 h-3" />
                           {listing.seller}
                         </span>
                       </div>
-                      <div className="flex items-center gap-4 text-xs text-white/30 mt-1">
+                      <div className="flex items-center gap-4 text-xs text-[var(--t-3)] mt-1">
                         <span>Total: {formatCurrency(listing.amount * listing.price)} USDC</span>
                         {listing.expirationDate != null && (
                           <span className="flex items-center gap-1" title={formatExactDate(listing.expirationDate)}>
@@ -299,7 +301,7 @@ export default function SecondaryMarketView({
                         <button
                           onClick={() => handleBuy(listing)}
                           disabled={buyLoading === listing.id}
-                          className="flex items-center gap-1.5 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white rounded-lg text-xs font-medium transition-colors"
+                          className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[10px] shadow-[0_0_0_1px_var(--acc-glow),0_8px_20px_-6px_var(--acc-glow)] hover:brightness-110 disabled:opacity-50 text-xs font-medium transition-all"
                         >
                           <ShoppingCart className="w-3.5 h-3.5" />
                           {buyLoading === listing.id ? t.loading : t.smBuy}
@@ -314,12 +316,12 @@ export default function SecondaryMarketView({
         </div>
 
         <div>
-          <h2 className="text-lg font-semibold text-white mb-4">{t.smMyListings} ({myListings.length})</h2>
+          <h2 className="text-lg font-semibold text-white tracking-tight mb-4">{t.smMyListings} ({myListings.length})</h2>
           {isLoading ? (
             <LoadingSkeleton />
           ) : myListings.length === 0 ? (
-            <div className="bg-white/5 border border-white/5 rounded-xl p-8 text-center">
-              <p className="text-white/40 text-sm">{t.smNoListingsYet}</p>
+            <div className="glass-1 rounded-xl p-8 text-center">
+              <p className="text-[var(--t-3)] text-sm">{t.smNoListingsYet}</p>
             </div>
           ) : (
             <div className="space-y-2">
@@ -333,7 +335,7 @@ export default function SecondaryMarketView({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.03 }}
-                    className={`bg-white/5 border border-white/5 rounded-xl p-4 ${expired || isCancelled ? "opacity-50" : ""}`}
+                    className={`glass-2 lift p-5 ${expired || isCancelled ? "opacity-50" : ""}`}
                   >
                     <div className="flex items-center justify-between gap-4">
                       <div className="flex-1">
@@ -350,16 +352,16 @@ export default function SecondaryMarketView({
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center gap-4 text-xs text-white/50">
+                        <div className="flex items-center gap-4 text-xs text-[var(--t-2)]">
                           <span>{formatCurrency(listing.amount)} LP</span>
                           <span>{formatCurrency(listing.price)} USDC</span>
                           {listing.fee != null && (
-                            <span className="text-white/40">{t.smFee}: {(listing.fee / 100).toFixed(1)}%</span>
+                            <span className="text-[var(--t-3)]">{t.smFee}: {(listing.fee / 100).toFixed(1)}%</span>
                           )}
                           <span>Total: {formatCurrency(listing.amount * listing.price)} USDC</span>
                         </div>
                         {listing.expirationDate != null && (
-                          <div className="flex items-center gap-1 text-xs text-white/30 mt-1" title={formatExactDate(listing.expirationDate)}>
+                          <div className="flex items-center gap-1 text-xs text-[var(--t-3)] mt-1" title={formatExactDate(listing.expirationDate)}>
                             <Clock className="w-3 h-3" />
                             {formatRelativeTime(listing.expirationDate)}
                           </div>
@@ -371,7 +373,7 @@ export default function SecondaryMarketView({
                             <button
                               onClick={() => handleCancel(listing)}
                               disabled={cancelLoading === listing.id}
-                              className="flex items-center gap-1.5 px-3 py-1.5 bg-red-500 hover:bg-red-400 disabled:opacity-50 text-white rounded-lg text-xs font-medium transition-colors"
+                              className="flex items-center gap-1.5 px-3 py-1.5 bg-[rgba(248,113,113,0.12)] text-[#fca5a5] border border-[rgba(248,113,113,0.25)] hover:bg-[rgba(248,113,113,0.18)] disabled:opacity-50 rounded-lg text-xs font-medium transition-colors"
                             >
                               <AlertTriangle className="w-3 h-3" />
                               {cancelLoading === listing.id ? t.loading : t.confirm}
@@ -386,7 +388,7 @@ export default function SecondaryMarketView({
                         ) : (
                           <button
                             onClick={() => setCancelConfirmId(listing.id)}
-                            className="flex items-center gap-1.5 px-4 py-2 bg-red-500 hover:bg-red-400 text-white rounded-lg text-xs font-medium transition-colors"
+                            className="flex items-center gap-1.5 px-4 py-2 bg-[rgba(248,113,113,0.12)] text-[#fca5a5] border border-[rgba(248,113,113,0.25)] hover:bg-[rgba(248,113,113,0.18)] rounded-lg text-xs font-medium transition-colors"
                           >
                             <Ban className="w-3.5 h-3.5" />
                             {t.smCancelListing}

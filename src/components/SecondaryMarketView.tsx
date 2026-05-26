@@ -139,7 +139,7 @@ export default function SecondaryMarketView({
 
   return (
     <div className="pb-20">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
             {t.smTitle}
@@ -148,7 +148,7 @@ export default function SecondaryMarketView({
         </div>
         <button
           onClick={() => setShowCreate(!showCreate)}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[10px] shadow-[0_0_0_1px_var(--acc-glow),0_8px_20px_-6px_var(--acc-glow)] hover:brightness-110 text-sm font-medium transition-all"
+          className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[10px] shadow-[0_0_0_1px_var(--acc-glow),0_8px_20px_-6px_var(--acc-glow)] hover:brightness-110 text-sm font-medium transition-all"
         >
           {showCreate ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           {showCreate ? t.close : t.smCreateListing}
@@ -162,7 +162,7 @@ export default function SecondaryMarketView({
           className="glass-2 p-6 mb-8"
         >
           <h3 className="text-lg font-semibold text-white tracking-tight mb-4">{t.smCreateListing}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div>
               <label className="text-[11px] text-[var(--t-3)] uppercase tracking-widest block mb-1">{t.smProject}</label>
               <select
@@ -250,7 +250,7 @@ export default function SecondaryMarketView({
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.03 }}
-                    className={`glass-2 lift p-5 flex items-center justify-between gap-4 ${isInactive ? "opacity-50" : ""}`}
+                    className={`glass-2 lift p-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 ${isInactive ? "opacity-50" : ""}`}
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -266,7 +266,7 @@ export default function SecondaryMarketView({
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-4 text-xs text-[var(--t-2)]">
+                      <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--t-2)]">
                         <span>{formatCurrency(listing.amount)} LP</span>
                         <span>{formatCurrency(listing.price)} USDC</span>
                         {listing.fee != null && (
@@ -277,7 +277,7 @@ export default function SecondaryMarketView({
                           {listing.seller}
                         </span>
                       </div>
-                      <div className="flex items-center gap-4 text-xs text-[var(--t-3)] mt-1">
+                      <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--t-3)] mt-1">
                         <span>Total: {formatCurrency(listing.amount * listing.price)} USDC</span>
                         {listing.expirationDate != null && (
                           <span className="flex items-center gap-1" title={formatExactDate(listing.expirationDate)}>
@@ -337,7 +337,7 @@ export default function SecondaryMarketView({
                     transition={{ delay: i * 0.03 }}
                     className={`glass-2 lift p-5 ${expired || isCancelled ? "opacity-50" : ""}`}
                   >
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="font-semibold text-white">{listing.projectName}</span>
@@ -352,7 +352,7 @@ export default function SecondaryMarketView({
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center gap-4 text-xs text-[var(--t-2)]">
+                        <div className="flex flex-wrap items-center gap-4 text-xs text-[var(--t-2)]">
                           <span>{formatCurrency(listing.amount)} LP</span>
                           <span>{formatCurrency(listing.price)} USDC</span>
                           {listing.fee != null && (

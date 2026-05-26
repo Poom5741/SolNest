@@ -85,30 +85,30 @@ export default function MarketplaceView({
         <>
           {/* Hero */}
           <section className="glass-2 p-8 md:p-12 mb-8 mt-2">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="flex flex-col lg:flex-row gap-12 items-center">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--acc-soft)] border border-[var(--acc-glow)] text-[var(--acc)] text-xs font-semibold mb-6">
                   <Zap className="w-3.5 h-3.5" />
                   {t.tagline || "Decentralized Solar Lending"}
                 </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.02] mb-4">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.02] mb-4">
                   <span className="gradient-text">{t.mpTitle}</span>
                 </h1>
                 <p className="text-[17px] text-[var(--t-2)] max-w-[520px] leading-relaxed mb-8">{t.mpDesc}</p>
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={() => document.getElementById('project-grid')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="h-12 px-6 rounded-[14px] bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] font-semibold text-[15px] shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow),0_1px_0_rgba(255,255,255,0.4)_inset] hover:brightness-110 transition-all active:translate-y-px flex items-center gap-2"
+                    className="h-12 px-6 rounded-[14px] bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] font-semibold text-[15px] shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow),0_1px_0_rgba(255,255,255,0.4)_inset] hover:brightness-110 transition-all active:translate-y-px flex items-center justify-center gap-2"
                   >
                     <Sun className="w-4 h-4" />
                     Explore Projects
                   </button>
-                  <button className="h-12 px-6 rounded-[14px] bg-white/[0.05] border border-white/[0.1] backdrop-blur-xl text-white font-semibold text-[15px] hover:bg-white/[0.09] hover:border-white/[0.18] transition-all flex items-center gap-2">
+                  <button className="h-12 px-6 rounded-[14px] bg-white/[0.05] border border-white/[0.1] backdrop-blur-xl text-white font-semibold text-[15px] hover:bg-white/[0.09] hover:border-white/[0.18] transition-all flex items-center justify-center gap-2">
                     <BarChart3 className="w-4 h-4" />
                     Learn More
                   </button>
                 </div>
-                <div className="flex items-center gap-4 mt-4 text-[var(--t-3)] text-xs">
+                <div className="flex flex-wrap items-center gap-4 mt-4 text-[var(--t-3)] text-xs">
                   <div className="flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5" />
                     <span>SOC 2 Audited</span>
@@ -119,7 +119,7 @@ export default function MarketplaceView({
                   </div>
                 </div>
               </div>
-              <div className="hidden lg:flex justify-center">
+              <div className="hidden md:flex justify-center">
                 <div className="solar-visual" style={{ maxWidth: 360 }}>
                   <div className="core" />
                   <div className="ring ring-1" />
@@ -241,7 +241,7 @@ export default function MarketplaceView({
                 <p className="text-[var(--t-2)] leading-relaxed">{selectedProject.description}</p>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                 {[
                   { label: t.mpSystemSize, value: `${selectedProject.systemSize} kW`, icon: Sun },
                   { label: t.mpAPY, value: `${selectedProject.apy}%`, icon: TrendingUp },

@@ -124,7 +124,7 @@ export default function AdminView({
           </div>
           <h2 className="text-2xl font-bold text-white mb-4">{selectedProject.name}</h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
             <div>
               <span className="text-[11px] text-[var(--t-3)] uppercase tracking-widest">{t.adLocation}</span>
               <div className="text-sm text-white mt-1">{selectedProject.location}</div>
@@ -171,7 +171,7 @@ export default function AdminView({
 
   return (
     <div className="pb-20">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold bg-gradient-to-r from-white via-emerald-200 to-emerald-400 bg-clip-text text-transparent">
             {t.adTitle}
@@ -180,7 +180,7 @@ export default function AdminView({
         </div>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="flex items-center gap-2 px-4 py-2 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[14px] shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow)] hover:brightness-110 text-sm font-medium transition-all"
+          className="flex items-center justify-center gap-2 w-full sm:w-auto px-4 py-2 bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] rounded-[14px] shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow)] hover:brightness-110 text-sm font-medium transition-all"
         >
           {showForm ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
           {showForm ? t.close : t.adCreateTitle}
@@ -309,7 +309,7 @@ export default function AdminView({
               transition={{ delay: i * 0.03 }}
               className="glass-2 lift p-5"
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
                     <button
@@ -320,7 +320,7 @@ export default function AdminView({
                     </button>
                     <span className="text-white/30 text-xs">{project.id}</span>
                   </div>
-                  <div className="flex items-center gap-4 text-xs text-white/50">
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-white/50">
                     <span className="flex items-center gap-1">
                       <MapPin className="w-3 h-3" />
                       {project.location}
@@ -330,7 +330,7 @@ export default function AdminView({
                     <span>{formatCurrency(project.targetAmount)} USDC</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2">
                   <span className={`px-2 py-0.5 rounded text-xs font-medium ${statusColors[project.status]}`}>
                     {project.status}
                   </span>

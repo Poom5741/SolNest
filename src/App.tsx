@@ -206,7 +206,7 @@ function AppContent() {
                 </div>
               </div>
               <span className="font-bold text-lg text-white">{t.brandName}</span>
-              <span className="hidden md:flex items-center gap-1 px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full text-[10px] font-medium">
+              <span className="hidden lg:flex items-center gap-1 px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded-full text-[10px] font-medium">
                 <ShieldCheck className="w-3 h-3" />
                 {t.tagline}
               </span>
@@ -238,10 +238,10 @@ function AppContent() {
 
             <div className="flex items-center gap-3">
               {wallet.isConnected ? (
-                <div className="hidden sm:flex items-center gap-2.5 h-10 px-3.5 pr-1.5 rounded-full bg-white/[0.04] border border-[var(--acc-glow)] shadow-[0_0_0_1px_var(--acc-soft),0_0_16px_-4px_var(--acc-glow)]">
+                <div className="flex items-center gap-2.5 h-10 px-3.5 pr-1.5 rounded-full bg-white/[0.04] border border-[var(--acc-glow)] shadow-[0_0_0_1px_var(--acc-soft),0_0_16px_-4px_var(--acc-glow)]">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_var(--acc)]" />
-                  <span className="text-xs text-white/60">{wallet.address}</span>
-                  <span className="text-xs font-bold font-mono text-white/70">{wallet.usdcBalance.toLocaleString()} USDC</span>
+                  <span className="hidden sm:inline text-xs text-white/60 max-w-[80px] truncate">{wallet.address}</span>
+                  <span className="hidden sm:inline text-xs font-bold font-mono text-white/70">{wallet.usdcBalance.toLocaleString()} USDC</span>
                   <div className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-400 via-teal-500 to-indigo-500 border border-white/15" />
                 </div>
               ) : (
@@ -250,7 +250,7 @@ function AppContent() {
                   className="hidden sm:flex items-center gap-1.5 h-10 px-5 rounded-full bg-gradient-to-b from-emerald-400 to-emerald-600 text-[#04140b] text-xs font-semibold shadow-[0_0_0_1px_var(--acc-glow),0_10px_24px_-8px_var(--acc-glow),0_1px_0_rgba(255,255,255,0.4)_inset] hover:brightness-110 transition-all active:translate-y-px"
                 >
                   <Wallet className="w-3.5 h-3.5" />
-                  {t.connectWallet}
+                  <span className="hidden sm:inline">{t.connectWallet}</span>
                 </button>
               )}
 
@@ -273,7 +273,12 @@ function AppContent() {
         </div>
 
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-white/[0.06] bg-[rgba(5,13,26,0.85)] backdrop-blur-xl">
+          <>
+            <div
+              className="md:hidden fixed inset-0 z-30 bg-black/50"
+              onClick={() => setMobileMenuOpen(false)}
+            />
+          <div className="md:hidden relative z-40 border-t border-white/[0.06] bg-[rgba(5,13,26,0.95)] backdrop-blur-xl">
             <div className="px-4 py-3 space-y-1">
               {navItems.map(item => {
                 const Icon = item.icon;
@@ -312,6 +317,7 @@ function AppContent() {
               )}
             </div>
           </div>
+          </>
         )}
       </header>
 
@@ -370,7 +376,7 @@ function AppContent() {
 
       <footer className="border-t border-white/[0.05] py-8 mt-16">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded flex items-center justify-center">
                 <Zap className="w-3 h-3 text-white" />

@@ -64,7 +64,7 @@ export default function HomeownerView({
       </div>
 
       {loan && (
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
           {[
             { label: t.hoTotalLoan, value: `$${formatCurrency(loan.totalLoanAmount)}`, icon: DollarSign, color: "text-white" },
             { label: t.hoRemaining, value: `$${formatCurrency(loan.remainingBalance)}`, icon: BarChart3, color: "text-amber-400" },
@@ -92,7 +92,7 @@ export default function HomeownerView({
 
       {loan && (
         <div className="glass-2 p-6 mb-8">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-emerald-400" />
               <span className="text-white font-semibold">{t.hoMakePayment}</span>
@@ -127,7 +127,7 @@ export default function HomeownerView({
             <Sun className="w-5 h-5 text-amber-400" />
             <h2 className="text-lg font-semibold text-white">{t.hoEnergyTitle}</h2>
           </div>
-          <div className="flex gap-1">
+          <div className="flex flex-wrap gap-1">
             {(["daily", "weekly", "monthly"] as const).map(v => (
               <button
                 key={v}
@@ -144,7 +144,7 @@ export default function HomeownerView({
           </div>
         </div>
 
-        <div className="flex items-end gap-2 h-48">
+        <div className="flex items-end gap-2 h-36 sm:h-48">
           {chartData.map((d, i) => (
             <div key={i} className="flex-1 flex flex-col items-center gap-1 h-full justify-end">
               <motion.div
@@ -166,7 +166,7 @@ export default function HomeownerView({
             <Activity className="w-5 h-5 text-emerald-400" />
             <h2 className="text-lg font-semibold text-white">{t.hoInverterTitle}</h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
             {[
               { label: t.hoInverterStatus, value: inverter.status, icon: Gauge, color: "text-emerald-400" },
               { label: t.hoDailyYield, value: `${inverter.dailyYield} kWh`, icon: Zap, color: "text-amber-400" },

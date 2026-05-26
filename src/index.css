@@ -527,3 +527,42 @@ input[type="range"]::-moz-range-thumb {
   background: white; border: 2px solid var(--acc);
   box-shadow: 0 0 0 4px var(--acc-soft);
 }
+
+/* ── Mobile responsive overrides ──────────────────────────────── */
+@media (max-width: 640px) {
+  .glass-2 { border-radius: 16px; }
+  .glass-2::before { border-radius: 16px; }
+
+  .project-card .art { border-radius: 16px 16px 0 0; }
+  .project-card .body { padding: 14px 16px 16px; }
+  .project-card .meta { gap: 0; }
+  .project-card .meta > div { padding: 0 8px; }
+  .project-card .title { font-size: 15px; }
+
+  .stats-ribbon { grid-template-columns: repeat(2, 1fr) !important; gap: 16px; padding: 20px; }
+  .stats-ribbon .divider-v { display: none; }
+
+  .h-hero { font-size: 32px; }
+  .h-section { font-size: 22px; }
+
+  .solar-overlay { font-size: 11px; padding: 4px 8px; }
+  .solar-overlay .stat-value { font-size: 13px; }
+
+  .tbl th, .tbl td { padding: 10px 12px; font-size: 12px; white-space: nowrap; }
+
+  .btn { height: 36px; padding: 0 14px; font-size: 13px; }
+  .btn-lg { height: 44px; padding: 0 20px; }
+
+  .pill { height: 24px; padding: 0 8px; font-size: 11px; }
+  .filter-pill { height: 30px; padding: 0 12px; font-size: 12px; }
+
+  .p-lg { padding: 20px; }
+}
+
+@media (max-width: 480px) {
+  .solar-visual { width: 200px; height: 200px; }
+  .solar-visual .core { width: 70px; height: 70px; }
+  .solar-visual .ring-1 { width: 120px; height: 120px; }
+  .solar-visual .ring-2 { width: 160px; height: 160px; }
+  .solar-visual .ring-3 { width: 200px; height: 200px; }
+}

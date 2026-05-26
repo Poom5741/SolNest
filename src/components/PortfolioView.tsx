@@ -148,14 +148,14 @@ export default function PortfolioView({
   return (
     <div className="pb-20" style={{ display: "flex", flexDirection: "column", gap: 36 }}>
       {/* ── TOP: Portfolio summary + Allocation ────────────────── */}
-      <section className="grid gap-4" style={{ gridTemplateColumns: "1.5fr 1fr" }}>
+      <section className="grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-4">
         {/* Left — Value + bar chart */}
         <div className="glass-2" style={{ padding: 32 }}>
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div>
               <div className="label">Portfolio value</div>
               <div className="flex items-baseline gap-2.5" style={{ marginTop: 8 }}>
-                <div className="mono" style={{ fontSize: 48, fontWeight: 700, letterSpacing: "-0.025em", color: "var(--t-1)" }}>
+                <div className="mono text-3xl sm:text-4xl md:text-[48px]" style={{ fontWeight: 700, letterSpacing: "-0.025em", color: "var(--t-1)" }}>
                   ${fmtUsd(derived.totalValue)}
                 </div>
                 <span className="pill pill-acc">
@@ -163,7 +163,7 @@ export default function PortfolioView({
                   <span className="mono">+${fmtUsd(derived.dailyChange)}</span> today
                 </span>
               </div>
-              <div className="flex items-center gap-5" style={{ marginTop: 12, color: "var(--t-3)", fontSize: 13 }}>
+              <div className="flex flex-wrap items-center gap-5" style={{ marginTop: 12, color: "var(--t-3)", fontSize: 13 }}>
                 <span>Invested <span className="mono" style={{ color: "var(--t-1)" }}>${fmtUsd(summary.totalInvested)}</span></span>
                 <span>Realized <span className="mono" style={{ color: "var(--acc)" }}>+${fmtUsd(derived.realized)}</span></span>
                 <span>Unrealized <span className="mono" style={{ color: "var(--warm)" }}>+${fmtUsd(derived.unrealized)}</span></span>
@@ -197,7 +197,7 @@ export default function PortfolioView({
               <div className="label">Allocation by type</div>
               <span className="pill pill-warm mono">{derived.avgApy.toFixed(1)}% APY</span>
             </div>
-            <div className="flex items-center gap-5">
+            <div className="flex flex-col sm:flex-row items-center gap-5">
               <Donut data={ALLOCATION} size={130} thickness={18} />
               <div className="flex flex-col gap-2 flex-1">
                 {ALLOCATION.map((a) => (
@@ -229,7 +229,7 @@ export default function PortfolioView({
       </section>
 
       {/* ── KPI Strip ──────────────────────────────────────────── */}
-      <section className="grid grid-cols-4 gap-4">
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
           { icon: PiggyBank, label: "Total invested", value: `$${fmtUsd(summary.totalInvested)}`, change: 12, color: "text-emerald-400" },
           { icon: TrendingUp, label: "Total earnings", value: `$${fmtUsd(derived.totalEarned)}`, change: 8, color: "text-amber-400" },
@@ -253,7 +253,7 @@ export default function PortfolioView({
       {/* ── Tabbed section ─────────────────────────────────────── */}
       <section className="glass-2">
         <div style={{ padding: "20px 24px 0", borderBottom: "0.5px solid rgba(255,255,255,0.06)" }}>
-          <div className="flex gap-0.5">
+          <div className="flex gap-0.5 overflow-x-auto">
             {([
               ["positions", "Active positions", positions.length] as const,
               ["transactions", "Transactions", MOCK_TRANSACTIONS.length] as const,
@@ -286,7 +286,7 @@ export default function PortfolioView({
         <div style={{ padding: 4 }}>
           {/* Positions table */}
           {tab === "positions" && (
-            <table className="tbl">
+            <div className="overflow-x-auto"><table className="tbl">
               <thead>
                 <tr>
                   <th style={{ textAlign: "left" }}>Project</th>
@@ -342,12 +342,12 @@ export default function PortfolioView({
                   );
                 })}
               </tbody>
-            </table>
+            </table></div>
           )}
 
           {/* Transactions table */}
           {tab === "transactions" && (
-            <table className="tbl">
+            <div className="overflow-x-auto"><table className="tbl">
               <thead>
                 <tr>
                   <th></th>
@@ -390,12 +390,12 @@ export default function PortfolioView({
                   );
                 })}
               </tbody>
-            </table>
+            </table></div>
           )}
 
           {/* Payouts table */}
           {tab === "payouts" && (
-            <table className="tbl">
+            <div className="overflow-x-auto"><table className="tbl">
               <thead>
                 <tr>
                   <th style={{ textAlign: "left" }}>Project</th>
@@ -437,7 +437,7 @@ export default function PortfolioView({
                   );
                 })}
               </tbody>
-            </table>
+            </table></div>
           )}
         </div>
       </section>

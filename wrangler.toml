@@ -15,7 +15,7 @@ not_found_handling = "single-page-application"
 [[d1_databases]]
 binding = "DB"
 database_name = "solnest-db"
-database_id = "local-dev"
+database_id = "ba8191a0-4db6-4b4e-a398-4d95e1aa9cfa"
 
 # R2 Bucket — document/image storage
 # Create: npx wrangler r2 bucket create solnest-uploads
@@ -28,7 +28,7 @@ main = "src/worker/index.ts"
 [[env.production.d1_databases]]
 binding = "DB"
 database_name = "solnest-db"
-database_id = ""
+database_id = "ba8191a0-4db6-4b4e-a398-4d95e1aa9cfa"
 [[env.production.r2_buckets]]
 binding = "R2_BUCKET"
 bucket_name = "solnest-uploads"

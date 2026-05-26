@@ -7,6 +7,7 @@ compatibility_flags = ["nodejs_compat"]
 # Static assets (Vite build output)
 [assets]
 directory = "./dist"
+not_found_handling = "single-page-application"
 
 # D1 Database — off-chain project metadata, risk, telemetry
 # Create: npx wrangler d1 create solnest-db

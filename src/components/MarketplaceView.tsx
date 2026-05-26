@@ -108,6 +108,16 @@ export default function MarketplaceView({
                     Learn More
                   </button>
                 </div>
+                <div className="flex items-center gap-4 mt-4 text-[var(--t-3)] text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>SOC 2 Audited</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Zap className="w-3.5 h-3.5" />
+                    <span>USDC Settlement</span>
+                  </div>
+                </div>
               </div>
               <div className="hidden lg:flex justify-center">
                 <div className="solar-visual" style={{ maxWidth: 360 }}>
@@ -122,6 +132,10 @@ export default function MarketplaceView({
                   <div className="solar-overlay" style={{ bottom: '10%', right: '-4%' }}>
                     <div className="stat-value">{(projects.reduce((s, p) => s + p.apy, 0) / Math.max(projects.length, 1)).toFixed(1)}%</div>
                     <div className="stat-label">Avg APY</div>
+                  </div>
+                  <div className="solar-overlay" style={{ bottom: '32%', left: '-2%' }}>
+                    <div className="stat-value" style={{ color: 'var(--warm)' }}>{(projects.reduce((s, p) => s + p.systemSize, 0) / 1000).toFixed(1)} MW</div>
+                    <div className="stat-label">Total Capacity</div>
                   </div>
                 </div>
               </div>
@@ -138,7 +152,7 @@ export default function MarketplaceView({
             ].map((stat, i) => (
               <div key={i}>
                 <div className="w-9 h-9 rounded-[10px] bg-[var(--acc-soft)] text-[var(--acc)] flex items-center justify-center mb-3">
-                  <stat.icon className="w-4.5 h-4.5" />
+                  <stat.icon className="w-[18px] h-[18px]" />
                 </div>
                 <div className="font-mono text-[28px] font-semibold tracking-tight">{stat.value}</div>
                 <div className="text-xs text-[var(--t-3)] uppercase tracking-widest mt-1">{stat.label}</div>
@@ -331,53 +345,68 @@ export default function MarketplaceView({
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ delay: i * 0.04 }}
                   onClick={() => setSelectedProject(project)}
-                  className="text-left glass-2 lift cursor-pointer flex flex-col"
+                  className="text-left glass-2 lift project-card"
                 >
-                  <div className="aspect-[16/10] overflow-hidden rounded-t-[22px] bg-[var(--bg-1)]">
+                  <div className="art">
                     <img
                       src={project.image}
                       alt={project.name}
-                      className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500"
                     />
-                  </div>
-                  <div className="p-5 flex flex-col gap-3.5 relative">
-                    <div className="flex items-center gap-2">
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${statusColors[project.status]}`}>
-                        {project.status}
-                      </span>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium border ${riskColors[project.risk]}`}>
-                        {project.risk}
-                      </span>
+                    <div className="badges">
+                      <div className="flex gap-1.5">
+                        <span className="pill" style={{ background: 'rgba(10,22,40,0.65)', backdropFilter: 'blur(8px)' }}>
+                          {project.status}
+                        </span>
+                        <span className={`pill ${
+                          project.risk === 'Low' ? 'pill-acc' : project.risk === 'Moderate' ? 'pill-warm' : 'pill-danger'
+                        }`}>
+                          {project.risk}
+                        </span>
+                      </div>
+                      <span className="pill pill-warm mono">{project.apy}%</span>
                     </div>
+                  </div>
+                  <div className="body">
                     <div>
-                      <h3 className="font-semibold text-[17px] text-white tracking-tight mb-1">{project.name}</h3>
-                      <div className="flex items-center gap-1.5 text-[var(--t-3)] text-xs">
+                      <div className="loc">
                         <MapPin className="w-3 h-3" />
                         {project.location}
                       </div>
+                      <div className="title" style={{ marginTop: 4 }}>{project.name}</div>
                     </div>
-                    <div className="grid grid-cols-3 gap-0 pt-3 border-t border-white/[0.06]">
-                      <div className="pr-2.5">
-                        <div className="font-mono text-base font-semibold text-white">{project.systemSize}<small className="text-[var(--t-3)] text-xs ml-0.5">kW</small></div>
-                        <div className="text-[10.5px] text-[var(--t-3)] uppercase tracking-wider mt-0.5">Size</div>
+                    <div className="meta">
+                      <div>
+                        <div className="mv mono">{project.systemSize}<span className="text-[var(--t-3)] text-[11px] ml-0.5">kW</span></div>
+                        <div className="ml">Size</div>
                       </div>
-                      <div className="px-2.5 border-l border-white/[0.08]">
-                        <div className="font-mono text-base font-semibold text-[var(--warm)]">{project.apy}%</div>
-                        <div className="text-[10.5px] text-[var(--t-3)] uppercase tracking-wider mt-0.5">APY</div>
+                      <div>
+                        <div className="mv acc">{project.apy}%</div>
+                        <div className="ml">APY</div>
                       </div>
-                      <div className="pl-2.5 border-l border-white/[0.08]">
-                        <div className="font-mono text-base font-semibold text-white">{project.duration}<small className="text-[var(--t-3)] text-xs ml-0.5">mo</small></div>
-                        <div className="text-[10.5px] text-[var(--t-3)] uppercase tracking-wider mt-0.5">Term</div>
+                      <div>
+                        <div className="mv mono">{project.duration}<span className="text-[var(--t-3)] text-[11px] ml-0.5">mo</span></div>
+                        <div className="ml">Term</div>
                       </div>
                     </div>
                     <div>
-                      <div className="flex justify-between text-xs text-[var(--t-3)] mb-1.5">
+                      <div className="fund-status mb-1.5">
                         <span>{project.fundingProgress}% funded</span>
-                        <span className="font-mono font-semibold text-white">{formatCurrency(project.targetAmount)} USDC</span>
+                        <span className="pct">{formatCurrency(project.targetAmount)} USDC</span>
                       </div>
                       <div className="progress-glass">
                         <div style={{ width: `${project.fundingProgress}%` }} />
                       </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-1">
+                      <div className="flex items-center gap-1.5 text-xs text-[var(--t-3)]">
+                        <Users className="w-3 h-3" />
+                        {project.investorCount} investors
+                      </div>
+                      {project.status === 'Funding' && (
+                        <span className="pill pill-acc text-[11px]">
+                          <span className="dot" />Open
+                        </span>
+                      )}
                     </div>
                   </div>
                 </motion.button>
@@ -385,6 +414,30 @@ export default function MarketplaceView({
             </div>
           )}
         </>
+      )}
+
+      {!selectedProject && (
+        <section className="glass-1 p-8 mt-8">
+          <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <h3 className="text-[22px] font-semibold text-white tracking-tight">How SolNest Works</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Search, title: 'Browse vetted projects', desc: 'Every project is underwritten and risk-tiered. Solar arrays and microgrids across the region.' },
+              { icon: Zap, title: 'Lend in USDC', desc: 'Fund any project from $100. Capital is escrowed on-chain until target is met, then deployed.' },
+              { icon: TrendingUp, title: 'Earn from generation', desc: 'Receive a share of solar revenue, streamed monthly. 6–12% APY based on project tier.' },
+              { icon: Users, title: 'Exit anytime', desc: 'List your position on the Secondary Market or hold to term. Principal returned at maturity.' },
+            ].map((step, i) => (
+              <div key={i}>
+                <div className="w-9 h-9 rounded-[10px] bg-[var(--acc-soft)] text-[var(--acc)] flex items-center justify-center mb-3.5">
+                  <step.icon className="w-[18px] h-[18px]" />
+                </div>
+                <div className="text-[17px] font-semibold text-white tracking-tight">{step.title}</div>
+                <div className="text-[13.5px] text-[var(--t-2)] mt-1.5 leading-relaxed">{step.desc}</div>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
       <AnimatePresence>

@@ -82,7 +82,7 @@ export default function PortfolioView({
             className="glass-2 p-5"
           >
             <div className="w-9 h-9 rounded-[10px] bg-[var(--acc-soft)] text-[var(--acc)] flex items-center justify-center mb-3">
-              <item.icon className="w-4.5 h-4.5" />
+              <item.icon className="w-[18px] h-[18px]" />
             </div>
             <div className="text-xs text-[var(--t-3)] uppercase tracking-widest mb-1">{item.label}</div>
             <div className={`text-xl font-bold font-mono ${item.color}`}>{item.value}</div>

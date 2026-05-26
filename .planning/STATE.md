@@ -1,8 +1,8 @@
 # Project State
 
 ## Current Status
-- **Phase**: Phase 5 PLAN CREATED (Secondary Market)
-- **Next action**: Execute Phase 5 → review PLAN-05.md → `/gsd-execute-phase 5`
+- **Phase**: Phase 5 COMPLETE (Secondary Market)
+- **Next action**: Phase 6 planning or deployment
 
 ## Phase 1 Summary (Complete)
 
@@ -105,21 +105,44 @@
 - **tsc --noEmit**: 0 errors
 - **Build**: succeeds (651KB JS)
 
-## Phase 5 Planning (Ready)
+## Phase 5 Summary (Complete)
 
 | Requirement | Status | Evidence |
 |---|---|---|
-| SEC-01 (List LP tokens) | ⬜ | Planned — Task 1 (contract) + Task 4 (hook) + Task 5 (UI) |
-| SEC-02 (Buy LP tokens) | ⬜ | Planned — Task 1 (contract buy()) + Task 4 (hook) + Task 5 (UI) |
-| SEC-03 (Order book) | ⬜ | Planned — Task 1 (listing storage) + Task 4 (read queries) + Task 5 (listings grid) |
+| SEC-01 (List LP tokens) | ✅ | SecondaryMarket.sol list() + useRealSecondaryMarket createListing + UI create form with durationDays |
+| SEC-02 (Buy LP tokens) | ✅ | SecondaryMarket.sol buy() + useRealSecondaryMarket buyListing + UI buy button with USDC approval |
+| SEC-03 (Order book) | ✅ | On-chain listings mapping + useReadContracts iteration + SecondaryMarketView sorted grid with status badges |
 
-**Planning artifacts:**
-- `.planning/05-CONTEXT.md` — 16 locked decisions (D-01 through D-16)
-- `.planning/05-RESEARCH.md` — Contract design, wagmi patterns, pitfalls
-- `.planning/05-UI-SPEC.md` — Design system + copywriting contract
-- `.planning/05-PLAN.md` — 8 tasks, 6 waves, execution order
+### Smart Contract
+- **SecondaryMarket.sol**: Escrow P2P market with list/buy/cancel, AccessControl, ReentrancyGuard, SafeERC20
+- **Fee model**: feeBasisPoints (250 = 2.5%), collected from buyer, seller receives full price
+- **Expiration**: durationDays-based, client-side filtering for expired status
+- **Custom errors**: ListingNotActive, ListingExpired, SelfPurchase, ZeroAmount, ZeroPrice, ZeroDuration, etc.
+- **ABI**: `src/abis/SecondaryMarket.abi.json`
 
-**New contract:** `contracts/contracts/SecondaryMarket.sol` (escrow P2P, not yet created)
+### Frontend Hook
+- **useRealSecondaryMarket**: Full wagmi integration — useReadContract, useReadContracts, useWriteContract, useWaitForTransactionReceipt
+- **Pre-approval flow**: needsApproval (LP tokens), needsUsdcApproval (USDC) with approveLpTokens/approveUsdc helpers
+- **Error mapping**: Solidity revert reasons → user-friendly messages
+- **Return shape matches mock**: data, myListings, isLoading, error, mutate, buyListing, createListing, cancelListing, refresh, needsApproval, needsUsdcApproval, approveLpTokens, approveUsdc
+
+### UI Evolution
+- SecondaryMarketView evolved in-place (D-13)
+- Loading skeleton, expired badges, cancel button with confirmation dialog
+- Duration input (1-30 days), approve buttons, fee display
+- Presentational component pattern maintained (D-14)
+
+### Types & Data
+- SecondaryListing extended with expirationDate, status, fee, listingId, durationDays, tokenContract (D-15)
+- Mock data updated with new fields
+- EN + TH translations for all new strings
+
+### Verification
+- **163 tests** (17+ files), 0 failures
+- **tsc --noEmit**: 0 errors
+- **Build**: succeeds (680KB JS)
+- **No as any / @ts-ignore / @ts-expect-error** in new code
+- **All 16 design decisions** (D-01 through D-16) confirmed
 
 ## Key Decisions
 

@@ -83,7 +83,7 @@ export interface SecondaryListing {
   seller: string;
   createdAt: string;
   expirationDate?: number;
-  status?: "active" | "expired" | "cancelled" | "pending";
+  status?: "active" | "expired" | "cancelled" | "sold";
   fee?: number;
   listingId?: number;
   durationDays?: number;

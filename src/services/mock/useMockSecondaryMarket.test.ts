@@ -34,6 +34,48 @@ describe('useMockSecondaryMarket', () => {
     expect(listing).toHaveProperty('createdAt');
   });
 
+  it('listings include extended escrow fields', () => {
+    const { result } = renderHook(() =>
+      useMockSecondaryMarket('0xTestWallet')
+    );
+    const listing = result.current.data[0];
+    expect(listing).toHaveProperty('expirationDate');
+    expect(typeof listing.expirationDate).toBe('number');
+    expect(listing).toHaveProperty('status');
+    expect(['active', 'expired', 'cancelled', 'sold']).toContain(listing.status);
+    expect(listing).toHaveProperty('fee');
+    expect(typeof listing.fee).toBe('number');
+    expect(listing).toHaveProperty('listingId');
+    expect(typeof listing.listingId).toBe('number');
+  });
+
+  it('cancelListing sets listing status to cancelled', () => {
+    const { result } = renderHook(() =>
+      useMockSecondaryMarket('0xTestWallet')
+    );
+    const targetListingId = result.current.data[0].listingId!;
+    act(() => {
+      result.current.cancelListing(targetListingId);
+    });
+    const updated = result.current.data.find(l => l.listingId === targetListingId);
+    expect(updated?.status).toBe('cancelled');
+  });
+
+  it('createListing includes extended fields', () => {
+    const { result } = renderHook(() =>
+      useMockSecondaryMarket('0xTestWallet')
+    );
+    act(() => {
+      result.current.createListing('SOL-010', 'Test Project', 200, 210, '0xSeller', 14);
+    });
+    const added = result.current.data[result.current.data.length - 1];
+    expect(added.expirationDate).toBeDefined();
+    expect(added.status).toBe('active');
+    expect(added.fee).toBe(250);
+    expect(added.listingId).toBeDefined();
+    expect(added.durationDays).toBe(14);
+  });
+
   it('myListings filters by wallet address', () => {
     const { result } = renderHook(() =>
       useMockSecondaryMarket('0xTestWallet')

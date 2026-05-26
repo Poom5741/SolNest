@@ -12,13 +12,27 @@ vi.mock('wagmi', () => ({
   useBalance: () => ({ data: undefined, refetch: vi.fn() }),
   useReadContract: () => ({ data: undefined, refetch: vi.fn(), isLoading: false, error: null }),
   useReadContracts: () => ({ data: undefined, refetch: vi.fn(), isLoading: false, error: null }),
-  useWriteContract: () => ({ writeContractAsync: vi.fn() }),
+  useWriteContract: () => ({ writeContractAsync: vi.fn(), data: undefined }),
+  useWaitForTransactionReceipt: () => ({ isLoading: false }),
 }));
 
 vi.mock('@tanstack/react-query', () => ({
   QueryClient: vi.fn(),
   QueryClientProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
+
+const localStorageMock = (() => {
+  const store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] ?? null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { Object.keys(store).forEach(k => delete store[k]); },
+    length: 0,
+    key: () => null,
+  };
+})();
+Object.defineProperty(globalThis, 'localStorage', { value: localStorageMock });
 
 describe('App', () => {
   it('renders without crashing', () => {

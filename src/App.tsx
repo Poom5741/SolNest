@@ -105,7 +105,7 @@ function AppContent() {
 
   const { createProject, updateStatus: adminUpdateStatus } = USE_REAL ? realAdmin : mockAdmin;
 
-  const { data: listings, myListings, buyListing, createListing } = USE_REAL ? realSM : mockSM;
+  const { data: listings, myListings, isLoading: smLoading, buyListing, createListing, cancelListing } = USE_REAL ? realSM : mockSM;
 
   const handleSetLanguage = (choice: Language) => {
     setLang(choice);
@@ -155,8 +155,17 @@ function AppContent() {
     return await buyListing(listingId);
   };
 
-  const handleCreateListing = (projectId: string, projectName: string, amount: number, price: number) => {
-    createListing(projectId, projectName, amount, price, wallet.address ?? "");
+  const handleCreateListing = (projectId: string, projectName: string, amount: number, price: number, _seller: string, durationDays?: number) => {
+    createListing(projectId, projectName, amount, price, wallet.address ?? "", durationDays);
+  };
+
+  const handleCancelListing = async (listingId: string) => {
+    const listing = listings.find(l => l.id === listingId);
+    if (listing?.listingId != null) {
+      cancelListing(listing.listingId);
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -318,8 +327,10 @@ function AppContent() {
               projects={projects}
               lang={lang}
               walletAddress={wallet.address ?? ""}
+              isLoading={smLoading}
               onBuy={handleBuyListing}
               onCreateListing={handleCreateListing}
+              onCancel={handleCancelListing}
             />
           )}
         </ErrorBoundary>
